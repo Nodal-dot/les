@@ -1,0 +1,74 @@
+/* Reset margins and paddings */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+/* Remove list styles */
+ol, ul {
+  list-style: none;
+}
+
+/* Remove default table spacing */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Remove default button styling */
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Remove default input styling */
+input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+/* Remove anchor text decoration */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Remove image border */
+img {
+  border-style: none;
+}
+
+/* Remove fieldset defaults */
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* Blur images when they fail to load */
+img[alt]:not([alt=""]) {
+  font-size: 0;
+}
+
+img[alt]:not([alt=""])::after {
+  content: attr(alt);
+  display: block;
+  font-size: initial;
+  color: #999;
+}
