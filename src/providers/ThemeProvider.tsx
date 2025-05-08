@@ -7,7 +7,7 @@ interface ThemeContextType {
   toggleTheme: () => void;
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+const ThemeContext = createContext<ThemeContextType>(undefined);
 
 interface ThemeProviderProps {
   children: ReactNode;
