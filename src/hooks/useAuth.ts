@@ -17,7 +17,6 @@ export const useAuth = () => {
   const login = async (username: string, password: string) => {
     dispatch(loginStart());
     
-    // Mock authentication
     setTimeout(() => {
       const foundUser = mockUsers.find(u => u.username === username);
       if (foundUser && password === 'password') {

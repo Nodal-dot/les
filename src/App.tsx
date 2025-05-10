@@ -1,4 +1,3 @@
-import './style/index.scss'
 import { useSelector } from 'react-redux';
 import { RootState } from './store/types';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
@@ -11,10 +10,12 @@ import SensorData from './pages/SensorData';
 import UserGroup from './pages/UserGroup';
 import Reports from './pages/Reports';
 import Account from './pages/Account';
+import { Toaster } from './components/ui/toaster';
 
 const App = () => {
     const { isAuthenticated } = useSelector((state: RootState) => state.auth);
     return     <>
+    <Toaster/>
    <Router>
       {!isAuthenticated ? (
         <div>

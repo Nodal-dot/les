@@ -32,6 +32,7 @@ import App from './App';
 import { ThemeProvider } from './providers/ThemeProvider';
 import { Provider } from 'react-redux';
 import { store } from './store';
+import { defaultSystem, ChakraProvider  } from "@chakra-ui/react"
 
 const container = document.getElementById('root');
 
@@ -40,9 +41,10 @@ root.render(
 
     <React.StrictMode>
         <Provider store={store}>
-        <ThemeProvider>
-            <App />
-        </ThemeProvider>
+            <ChakraProvider value={defaultSystem}>
+                <App />
+            </ChakraProvider>
+            
         </Provider>
 
     </React.StrictMode>
