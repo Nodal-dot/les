@@ -29,11 +29,9 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
-import { ThemeProvider } from './providers/ThemeProvider';
 import { Provider } from 'react-redux';
 import { store } from './store';
-import { defaultSystem, ChakraProvider  } from "@chakra-ui/react"
-
+import  {Provider as ChackraProvider} from './components/ui/provider'
 const container = document.getElementById('root');
 
 const root = createRoot(container);
@@ -41,11 +39,11 @@ root.render(
 
     <React.StrictMode>
         <Provider store={store}>
-            <ChakraProvider value={defaultSystem}>
+            <ChackraProvider>
                 <App />
-            </ChakraProvider>
+            </ChackraProvider>
             
         </Provider>
 
     </React.StrictMode>
-);1
+);
