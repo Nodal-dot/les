@@ -1,31 +1,60 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
-import { RootState } from '../../store/types';
+import {
+  Breadcrumb as ChakraBreadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  Flex,
+} from "@chakra-ui/react";
+import { Link, useLocation } from "react-router-dom";
+import * as React from "react";
 
-const Topbar: React.FC = () => {
-  const { user } = useSelector((state: RootState) => state.auth);
+export const TopBar = () => {
   const location = useLocation();
+  const pathnames = location.pathname.split("/").filter((x) => x);
 
-  if (!user) return null;
-
-  const getBreadcrumb = () => {
-    const path = location.pathname;
-    if (path.includes('dashboard')) return 'Dashboard';
-    if (path.includes('map')) return 'Map View';
-    if (path.includes('sensors')) return 'Sensor Data';
-    if (path.includes('user-group')) return 'User Group';
-    if (path.includes('reports')) return 'Reports';
-    if (path.includes('account')) return 'Account';
-    return 'Dashboard';
-  };
+  const items = [
+    { title: "Главная", url: "/" },
+    ...pathnames.map((name, index) => {
+      const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
+      return {
+        title: name.charAt(0).toUpperCase() + name.slice(1),
+        url: routeTo,
+      };
+    }),
+  ];
 
   return (
-    <div>
-      <h1>{getBreadcrumb()}</h1>
-      <div>Welcome, {user.name} ({user.role})</div>
-    </div>
+    <Flex align="center" p={4} borderBottom="1px" borderColor="inherit">
+      <ChakraBreadcrumb.Root>
+        <ChakraBreadcrumb.List>
+          {items.map((item, index) => {
+            const isLast = index === items.length - 1;
+            return (
+              <React.Fragment key={index}>
+                <BreadcrumbItem>
+                  {isLast ? (
+                    <BreadcrumbLink
+                      as={Link}
+                      href={item.url}
+                      fontWeight="semibold"
+                      color="inherit"
+                      _hover={{ textDecoration: "none" }}
+                    >
+                      {item.title}
+                    </BreadcrumbLink>
+                  ) : (
+                    <BreadcrumbLink as={Link} href={item.url}>
+                      {item.title}
+                    </BreadcrumbLink>
+                  )}
+                </BreadcrumbItem>
+                {!isLast && <ChakraBreadcrumb.Separator />}
+              </React.Fragment>
+            );
+          })}
+        </ChakraBreadcrumb.List>
+      </ChakraBreadcrumb.Root>
+    </Flex>
   );
 };
 
-export default Topbar;
+export default TopBar;
