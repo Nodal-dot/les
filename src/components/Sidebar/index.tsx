@@ -24,12 +24,12 @@ const Sidebar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
 
   const navItems = [
-    { icon: FiHome, path: '/', label: 'Dashboard' },
-    { icon: FiMap, path: '/map', label: 'Карта' },
-    { icon: FiActivity, path: '/sensors', label: 'Датчики' },
-    { icon: FiUsers, path: '/users', label: 'Пользователи' },
-    { icon: FiFileText, path: '/reports', label: 'Отчеты' },
-    { icon: FiSettings, path: '/account', label: 'Аккаунт' },
+    { icon: FiHome, path: '/main_window', label: 'Dashboard' },
+    { icon: FiMap, path: '/map', label: 'Map' },
+    { icon: FiActivity, path: '/sensors', label: 'Sensors' },
+    { icon: FiUsers, path: '/users', label: 'Users' },
+    { icon: FiFileText, path: '/reports', label: 'Reports' },
+    { icon: FiSettings, path: '/account', label: 'Account' },
   ];
 
   return (
@@ -56,10 +56,18 @@ const Sidebar = () => {
                     px={4}
                     py={3}
                     borderRadius="md"
-                    bg={pathname === item.path ? (colorMode === 'light' ? 'gray.100' : 'gray.400') : 'transparent'}
+                    color={colorMode === 'dark' ? 'white' : 'black'} 
+                    bg={
+                      pathname === item.path 
+                        ? (colorMode === 'light' ? 'gray.200' : 'gray.600')
+                        : 'transparent'
+                    }
                     _hover={{
-                      textDecoration: 'none',
-                      bg: colorMode === 'light' ? 'gray.50' : 'gray.200',
+                      bg: colorMode === 'light' ? 'gray.100' : 'whiteAlpha.300', 
+                      color: colorMode === 'light' ? 'black' : 'white' 
+                    }}
+                    _active={{
+                      bg: colorMode === 'light' ? 'gray.200' : 'whiteAlpha.400' 
                     }}
                     transition="all 0.2s"
                     pointerEvents="auto"
