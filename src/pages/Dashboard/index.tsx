@@ -1,5 +1,4 @@
-import { Box, Heading, SimpleGrid } from '@chakra-ui/react';
-import { Stat } from '@chakra-ui/react';
+import { Box, Heading, SimpleGrid,Stat } from '@chakra-ui/react';
 
 const DashboardPage = () => {
   return (

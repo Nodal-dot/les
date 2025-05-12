@@ -4,7 +4,7 @@ import { useColorMode } from "../../components/ui/color-mode";
 
 const  NotFoundPage = () => {
   const navigate = useNavigate();
-    const { colorMode, toggleColorMode } = useColorMode();
+    const { colorMode } = useColorMode();
   
   return (
     <Box textAlign="center" py={10} px={6}>

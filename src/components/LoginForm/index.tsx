@@ -16,7 +16,7 @@ import { toaster } from '../ui/toaster';
 const LoginForm: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { login, loading, error, isAuthenticated } = useAuth();
+  const { login, loading, error } = useAuth();
 
   useEffect(() => {
     if (error) {

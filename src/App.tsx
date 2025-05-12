@@ -1,5 +1,3 @@
-import { useSelector } from 'react-redux';
-import { RootState } from './store/types';
 import { BrowserRouter as Router } from 'react-router-dom';
 import LoginForm from './components/LoginForm';
 import { Toaster } from './components/ui/toaster';
