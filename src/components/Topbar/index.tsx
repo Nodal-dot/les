@@ -7,7 +7,7 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import * as React from "react";
 
-export const TopBar = () => {
+export const Topbar = () => {
   const location = useLocation();
   const pathnames = location.pathname.split("/").filter((x) => x);
 
@@ -57,4 +57,4 @@ export const TopBar = () => {
   );
 };
 
-export default TopBar;
+export default Topbar;
