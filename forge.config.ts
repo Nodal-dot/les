@@ -32,6 +32,11 @@ const config: ForgeConfig = {
               js: './src/preload.ts',
             },
           },
+           {
+            html: './src/preload.html',
+            name: 'preload_window',
+            js: './src/preload.js',
+          },
         ],
       },
     }),

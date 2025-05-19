@@ -4,11 +4,13 @@ import { Toaster } from './components/ui/toaster';
 import { Flex } from '@chakra-ui/react';
 import Layout from './components/Layout';
 import AppRoutes from './components/AppRoutes';
+import { useSelector } from 'react-redux';
+import { RootState } from './store/types';
 
 
 const App = () => {
-    // const { isAuthenticated } = useSelector((state: RootState) => state.auth);
-    const isAuthenticated = true
+    const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+
     return (
         <>
             <Toaster />
