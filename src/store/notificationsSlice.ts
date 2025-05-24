@@ -1,26 +1,11 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { mockNotificationsApi } from '../mocks/mockNotifications';
-
-export interface Notification {
-  id: string;
-  type: 'access_request' | 'direct_message';
-  sender: {
-    username: string;
-    role: string;
-  };
-  recipient: {
-    username: string;
-    role: string;
-  };
-  sensor?: {
-    sensorId: string;
-    networkId: string;
-  };
-  message: string;
-  timestamp: string;
-  read?: boolean;
-  status?: 'pending' | 'approved' | 'rejected' | 'acknowledged';
-}
+import { 
+  Notification, 
+  User, 
+  fetchNotifications, 
+  markNotificationAsRead, 
+  updateNotificationStatus 
+} from '../api';
 
 interface NotificationsState {
   notifications: Notification[];
@@ -34,22 +19,25 @@ const initialState: NotificationsState = {
   error: null,
 };
 
-export const fetchNotifications = createAsyncThunk(
-  'notifications/fetchNotifications',
-  async (payload: { userId: number; userRole: string }, { rejectWithValue }) => {
+export const loadNotifications = createAsyncThunk(
+  'notifications/load',
+  async (_, { getState, rejectWithValue }) => {
     try {
-      return await mockNotificationsApi.get(payload.userId.toString(), payload.userRole);
+      const { auth } = getState() as { auth: { user: User | null } };
+      if (!auth.user) throw new Error('User not authenticated');
+      
+      return await fetchNotifications(auth.user.username, auth.user.role);
     } catch (err) {
       return rejectWithValue(err.message);
     }
   }
 );
 
-export const markNotificationAsRead = createAsyncThunk(
+export const markAsRead = createAsyncThunk(
   'notifications/markAsRead',
   async (notificationId: string, { rejectWithValue }) => {
     try {
-      await mockNotificationsApi.markAsRead(notificationId);
+      await markNotificationAsRead(notificationId);
       return notificationId;
     } catch (err) {
       return rejectWithValue(err.message);
@@ -57,14 +45,14 @@ export const markNotificationAsRead = createAsyncThunk(
   }
 );
 
-export const updateNotificationStatus = createAsyncThunk(
-  'notifications/updateStatus',
+export const changeNotificationStatus = createAsyncThunk(
+  'notifications/changeStatus',
   async (
     payload: { id: string; status: 'approved' | 'rejected' | 'acknowledged' },
     { rejectWithValue }
   ) => {
     try {
-      await mockNotificationsApi.updateStatus(payload.id, payload.status);
+      await updateNotificationStatus(payload.id, payload.status);
       return payload;
     } catch (err) {
       return rejectWithValue(err.message);
@@ -78,25 +66,28 @@ const notificationsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchNotifications.pending, (state) => {
+      .addCase(loadNotifications.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchNotifications.fulfilled, (state, action) => {
+      .addCase(loadNotifications.fulfilled, (state, action: PayloadAction<Notification[]>) => {
         state.notifications = action.payload;
         state.loading = false;
       })
-      .addCase(fetchNotifications.rejected, (state, action) => {
+      .addCase(loadNotifications.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
-      .addCase(markNotificationAsRead.fulfilled, (state, action) => {
+      .addCase(markAsRead.fulfilled, (state, action: PayloadAction<string>) => {
         const notification = state.notifications.find(n => n.id === action.payload);
         if (notification) {
           notification.read = true;
         }
       })
-      .addCase(updateNotificationStatus.fulfilled, (state, action) => {
+      .addCase(changeNotificationStatus.fulfilled, (
+        state, 
+        action: PayloadAction<{ id: string; status: 'approved' | 'rejected' | 'acknowledged' }>
+      ) => {
         const notification = state.notifications.find(n => n.id === action.payload.id);
         if (notification) {
           notification.status = action.payload.status;
@@ -105,4 +96,5 @@ const notificationsSlice = createSlice({
       });
   },
 });
+
 export default notificationsSlice.reducer;

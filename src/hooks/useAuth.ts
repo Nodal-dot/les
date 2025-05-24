@@ -1,35 +1,29 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch } from '../store';
-
-import { loginStart, loginSuccess, loginFailure, logout } from '../store/authSlice';
-import { RootState, User } from '../store/types';
-
-const mockUsers: User[] = [
-  { id: 1, username: 'user', role: 'user', name: 'Regular User' },
-  { id: 2, username: 'moderator', role: 'moderator', name: 'Moderator' },
-  { id: 3, username: 'admin', role: 'admin', name: 'Administrator' },
-];
+import { loginUser, logout } from '../store/authSlice';
+import { RootState } from '../store/types';
 
 export const useAuth = () => {
   const { user, isAuthenticated, loading, error } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
 
-  const login = async (username: string, password: string) => {
-    dispatch(loginStart());
-    
-    setTimeout(() => {
-      const foundUser = mockUsers.find(u => u.username === username);
-      if (foundUser && password === 'password') {
-        dispatch(loginSuccess(foundUser));
-      } else {
-        dispatch(loginFailure('Invalid credentials'));
-      }
-    }, 500);
+  const signIn = async (username: string, password: string) => {
+    try {
+      await dispatch(loginUser({ username, password })).unwrap();
+    } catch (err) {
+    }
   };
 
   const signOut = () => {
     dispatch(logout());
   };
 
-  return { user, isAuthenticated, loading, error, login, signOut };
+  return { 
+    user, 
+    isAuthenticated, 
+    loading, 
+    error, 
+    login: signIn, 
+    signOut 
+  };
 };

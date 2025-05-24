@@ -9,19 +9,12 @@ import {
   Flex,
   Tag,
   ButtonGroup, 
-  Icon,
-  IconButton,
   CloseButton
 } from '@chakra-ui/react';
 import { FaBell } from 'react-icons/fa';
-import {
-  fetchNotifications,
-  markNotificationAsRead,
-  updateNotificationStatus,
- Notification } from '../../store/notificationsSlice';
+import { loadNotifications, markAsRead, changeNotificationStatus } from '../../store/notificationsSlice';
 import { useAuth } from '../../hooks/useAuth';
 import { useAppDispatch, useAppSelector } from '../../store';
-
 
 const Notifications = () => {
   const dispatch = useAppDispatch();
@@ -30,12 +23,7 @@ const Notifications = () => {
 
   useEffect(() => {
     if (user) {
-      dispatch(
-        fetchNotifications({
-          userId: user.id,
-          userRole: user.role,
-        }),
-      );
+      dispatch(loadNotifications());
     }
   }, [dispatch, user]);
 
@@ -43,14 +31,14 @@ const Notifications = () => {
     const status =
       actionType === 'approve' ? 'approved' : actionType === 'reject' ? 'rejected' : 'acknowledged';
 
-    dispatch(updateNotificationStatus({ id: notificationId, status }));
+    dispatch(changeNotificationStatus({ id: notificationId, status }));
   };
 
   const handleMarkAsRead = (notificationId: string) => {
-    dispatch(markNotificationAsRead(notificationId));
+    dispatch(markAsRead(notificationId));
   };
 
-  const renderSender = (sender: Notification['sender']) => (
+  const renderSender = (sender) => (
     <Flex align="center">
       <Text fontSize="sm" ml={2}>
         {sender.username} ({sender.role})
@@ -58,13 +46,13 @@ const Notifications = () => {
     </Flex>
   );
 
-  const renderRecipient = (recipient: Notification['recipient']) => (
+  const renderRecipient = (recipient) => (
     <Text fontSize="xs" color="gray.500">
       Для: {recipient.username || `все ${recipient.role}`}
     </Text>
   );
 
-  const renderTag = (status: string) => {
+  const renderTag = (status) => {
     const colorScheme =
       status === 'pending' ? 'yellow' : status === 'approved' ? 'green' : status === 'rejected' ? 'red' : 'gray';
 
@@ -81,19 +69,21 @@ const Notifications = () => {
     <Menu.Root>
       <Menu.Trigger asChild>
         <Button variant="outline" size="sm">
-          <FaBell/>
+          { //@ts-ignore
+            <FaBell />
+          }
           {unreadCount > 0 && (
-          <Badge
-            colorScheme="red"
-            borderRadius="full"
-            position="absolute"
-            top="1"
-            right="1"
-            fontSize="xs"
-          >
-            {unreadCount}
-          </Badge>
-        )}
+            <Badge
+              colorScheme="red"
+              borderRadius="full"
+              position="absolute"
+              top="1"
+              right="1"
+              fontSize="xs"
+            >
+              {unreadCount}
+            </Badge>
+          )}
         </Button>
       </Menu.Trigger>
 
