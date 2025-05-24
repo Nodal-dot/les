@@ -3,13 +3,17 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   Flex,
+  Box,
 } from "@chakra-ui/react";
 import { Link, useLocation } from "react-router-dom";
 import * as React from "react";
+import { useAuth } from "../../hooks/useAuth";
+import Notifications from "../Notifications";
 
  const Topbar = () => {
   const location = useLocation();
   const pathnames = location.pathname.split("/").filter((x) => x);
+  const { user } = useAuth();
 
   const items = [
     { title: "Главная", url: "/" },
@@ -23,7 +27,7 @@ import * as React from "react";
   ];
 
   return (
-    <Flex align="center" p={4} borderBottom="1px" borderColor="inherit">
+    <Flex align="center" justifyContent="space-between" p={4} borderBottom="1px" borderColor="inherit">
       <ChakraBreadcrumb.Root>
         <ChakraBreadcrumb.List>
           {items.map((item, index) => {
@@ -53,6 +57,11 @@ import * as React from "react";
           })}
         </ChakraBreadcrumb.List>
       </ChakraBreadcrumb.Root>
+      <Flex alignItems={'center'} gap={'1.2rem'}>
+        <p>Добро пожаловать, { user.username }</p>
+          <Notifications />
+      </Flex>
+
     </Flex>
   );
 };

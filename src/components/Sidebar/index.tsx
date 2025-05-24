@@ -95,24 +95,6 @@ const Sidebar = () => {
       </Stack>
 
       <Box>
-        {isAuthenticated && user && (
-          <Flex 
-            align="center" 
-            p={4} 
-            mb={4}
-            borderRadius="md"
-            bg={colorMode === 'light' ? 'gray.100' : 'gray.700'}
-          >
-            <VStack align="flex-start">
-              <Text fontWeight="medium">{user.username}</Text>
-              {user.name && (
-                <Text fontSize="sm" color={colorMode === 'light' ? 'gray.600' : 'gray.300'}>
-                  {user.role}
-                </Text>
-              )}
-            </VStack>
-          </Flex>
-        )}
 
     
         <Flex 

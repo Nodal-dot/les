@@ -1,0 +1,12 @@
+{
+  "sensorId": "sensor_3",
+  "location": "Кингисепп",
+  "lastUpdated": "2025-04-25T00:46:52.496Z",
+  "isActive": true,
+  "accessUsers": [],
+  "region": "Ленинградская область",
+  "coordinates": {
+    "lat": 59.88926,
+    "lng": 29.929367
+  }
+}

@@ -9,11 +9,11 @@ import {
   Text,
   Link,
   Flex,
-} from '@chakra-ui/react';
-import { Field } from '@chakra-ui/react';
+ Field , Switch } from '@chakra-ui/react';
+
 import { PasswordInput } from '../ui/password-input';
 import { toaster } from '../ui/toaster';
-import { Switch } from '@chakra-ui/react';
+
 import { useColorMode } from '../ui/color-mode';
 
 interface LoginFormState {
@@ -204,7 +204,7 @@ const LoginForm: React.FC = () => {
               onCheckedChange={toggleColorMode}
             >
               <Switch.HiddenInput />
-              <Switch.Control bg={colorMode === 'dark' ? 'teal.500' : 'gray.300'}>
+              <Switch.Control >
                 <Switch.Thumb />
               </Switch.Control>
             </Switch.Root>

@@ -1,0 +1,12 @@
+{
+  "sensorId": "sensor_4",
+  "location": "Кириши",
+  "lastUpdated": "2025-04-26T12:22:17.757Z",
+  "isActive": false,
+  "accessUsers": [],
+  "region": "Ленинградская область",
+  "coordinates": {
+    "lat": 59.634967,
+    "lng": 29.248694
+  }
+}
