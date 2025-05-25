@@ -8,7 +8,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <Sidebar />
       <Flex direction="column" flex={1} overflow="auto">
         <Topbar />
-        <Box p={6} flex={1} bg="gray.50" _dark={{ bg: 'gray.800' }}>
+        <Box p={6} flex={1} bg="gray.50" _dark={{ bg: 'gray.800' } } overflow="scroll" >
           {children}
         </Box>
       </Flex>

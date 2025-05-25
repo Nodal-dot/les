@@ -1,62 +1,11 @@
 import axios from 'axios';
+import { LoginResponse, Network, Sensor,Notification, User, SensorDetails, NetworkDetails, SensorData, SensorDataResponse } from './store/types';
 
 const api = axios.create({
   baseURL: 'http://localhost:3001/api',
 
 });
 
-export interface User {
-  id: number;
-  username: string;
-  role: string;
-  name: string;
-}
-
-export interface LoginResponse {
-  user: User;
-}
-
-export interface Notification {
-  id: string;
-  type: 'access_request' | 'direct_message' | 'system_alert';
-  sender?: {
-    userId?: number;
-    username: string;
-    role: string;
-  };
-  recipient: {
-    username?: string;
-    role?: string;
-  };
-  sensor?: {
-    sensorId: string;
-    networkId: string;
-  };
-  message: string;
-  status: 'pending' | 'approved' | 'rejected' | 'acknowledged';
-  read: boolean;
-  timestamp: string;
-}
-
-export interface Network {
-  id: string;
-  name: string;
-  users: string[];
-}
-
-export interface Sensor {
-  sensorId: string;
-  location: string;
-  lastUpdated: string;
-  isActive: boolean;
-  accessUsers: string[];
-  region: string;
-  coordinates: {
-    lat: number;
-    lng: number;
-  };
-  networkId: string;
-}
 
 export const login = async (username: string, password: string): Promise<LoginResponse> => {
   const response = await api.post<LoginResponse>('/login', { username, password });
@@ -72,24 +21,81 @@ export const markNotificationAsRead = async (notificationId: string): Promise<vo
   await api.put(`/notifications/${notificationId}/read`);
 };
 
+export const register = async (username: string, password: string): Promise<LoginResponse> => {
+  const response = await api.post<LoginResponse>('/register', { username, password });
+  return response.data;
+};
+
 export const updateNotificationStatus = async (
   notificationId: string, 
-  status: 'approved' | 'rejected' | 'acknowledged'
+  status: string
 ): Promise<void> => {
   await api.put(`/notifications/${notificationId}/status`, { status });
 };
-
-export const fetchNetworks = async (): Promise<Network[]> => {
-  const response = await api.get<Network[]>('/networks');
-  return response.data;
+export const respondToAccessRequest = async (
+  notificationId: string,
+  response: 'approved' | 'rejected'
+): Promise<void> => {
+  await api.post('/notifications/respond-access', {
+    notificationId,
+    response
+  });
 };
+export const requestCompanyAccess = async (
+  requesterUsername: string, 
+  company: string,
+  adminUsername: string
+): Promise<void> => {
+  await api.post('/notifications/request-access', {
+    requesterUsername,
+    company,
+    adminUsername
+  });
+};
+
 
 export const fetchSensors = async (networkId: string): Promise<Sensor[]> => {
   const response = await api.get<Sensor[]>(`/networks/${networkId}/sensors`);
   return response.data;
 };
 
-export const fetchSensorData = async (networkId: string, sensorId: string): Promise<any[]> => {
-  const response = await api.get<any[]>(`/networks/${networkId}/sensors/${sensorId}/data`);
+
+
+export const fetchUsers = async (company?: string): Promise<User[]> => {
+  const params = company ? { company } : {};
+  const response = await api.get<User[]>('/users', { params });
+  return response.data;
+};
+
+export const updateUserRole = async (
+  username: string,
+  role: 'user' | 'moderator' | 'admin'
+): Promise<void> => {
+  await api.put(`/users/${username}`, { role });
+};
+
+export const deleteUser = async (username: string): Promise<void> => {
+  await api.put(`/users/${username}`, { action: 'delete' });
+};
+
+
+export const fetchNetworks = async (company?: string): Promise<NetworkDetails[]> => {
+  const params = company ? { company } : {};
+  const response = await api.get<NetworkDetails[]>('/networks', { params });
+  return response.data;
+};
+
+export const fetchNetworkSensors = async (networkId: string): Promise<SensorDetails[]> => {
+  const response = await api.get<SensorDetails[]>(`/networks/${networkId}/sensors`);
+  return response.data;
+};
+
+export const fetchSensorData = async (
+  networkId: string, 
+  sensorId: string
+): Promise<SensorDataResponse> => {
+  const response = await api.get<SensorDataResponse>(
+    `/networks/${networkId}/sensors/${sensorId}/data`
+  );
   return response.data;
 };

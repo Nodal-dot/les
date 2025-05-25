@@ -9,7 +9,6 @@ const Account: React.FC = () => {
   return (
     <div>
       <h2>Account Information</h2>
-      <p>Name: {user.name}</p>
       <p>Username: {user.username}</p>
       <p>Role: {user.role}</p>
       <button onClick={signOut}>Logout</button>

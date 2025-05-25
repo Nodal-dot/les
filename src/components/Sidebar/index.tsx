@@ -30,12 +30,12 @@ const Sidebar = () => {
   const { signOut, isAuthenticated, user } = useAuth();
 
   const navItems = [
-    { icon: FiHome, path: '/main_window', label: 'Dashboard' },
-    { icon: FiMap, path: '/map', label: 'Map' },
-    { icon: FiActivity, path: '/sensors', label: 'Sensors' },
-    { icon: FiUsers, path: '/users', label: 'Users' },
-    { icon: FiFileText, path: '/reports', label: 'Reports' },
-    { icon: FiSettings, path: '/account', label: 'Account' },
+    { icon: FiHome, path: '/main_window', label: 'Главная' },
+    { icon: FiMap, path: '/map', label: 'Карта' },
+    { icon: FiActivity, path: '/sensors', label: 'Сенсоры' },
+    { icon: FiUsers, path: '/users', label: 'Пользователи' },
+    { icon: FiFileText, path: '/reports', label: 'Ошибки' },
+    { icon: FiSettings, path: '/account', label: 'Аккаунт' },
   ];
 
   const handleLogout = () => {

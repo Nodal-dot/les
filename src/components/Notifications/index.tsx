@@ -27,9 +27,11 @@ const Notifications = () => {
     }
   }, [dispatch, user]);
 
-  const handleAction = (notificationId: string, actionType: 'approve' | 'reject' | 'acknowledge') => {
+  const handleAction = (notificationId: string, actionType: string) => {
     const status =
-      actionType === 'approve' ? 'approved' : actionType === 'reject' ? 'rejected' : 'acknowledged';
+      actionType === 'approve' ? 'одобрено' : 
+      actionType === 'reject' ? 'отклонено' : 
+      'подтверждено';
 
     dispatch(changeNotificationStatus({ id: notificationId, status }));
   };
@@ -40,8 +42,19 @@ const Notifications = () => {
 
   const renderSender = (sender) => (
     <Flex align="center">
-      <Text fontSize="sm" ml={2}>
-        {sender.username} ({sender.role})
+            <Text fontSize="sm" ml={2}>
+                {(() => {
+                  if (sender?.username && sender?.role) {
+                    return `${sender.username} (${sender.role})`;
+                  }
+                  if (sender?.username) {
+                    return sender.username;
+                  }
+                  if (sender?.role) {
+                    return `(${sender.role})`;
+                  }
+                  return sender || "";
+                })()}
       </Text>
     </Flex>
   );
@@ -69,9 +82,11 @@ const Notifications = () => {
     <Menu.Root>
       <Menu.Trigger asChild>
         <Button variant="outline" size="sm">
-          { //@ts-ignore
+          {
+            // @ts-ignore
             <FaBell />
           }
+          
           {unreadCount > 0 && (
             <Badge
               colorScheme="red"
@@ -91,7 +106,7 @@ const Notifications = () => {
         <Menu.Positioner>
           <Menu.Content>
             <Box p={3} borderBottomWidth="1px">
-              <Flex justify="space-between" align="center">
+              <Flex justify="space-between" gap={'1.2rem'} align="center">
                 <Text fontWeight="bold" fontSize="lg">
                   Уведомления
                 </Text>
@@ -125,7 +140,7 @@ const Notifications = () => {
                   <Menu.Item>
                     <Flex direction="column" width="100%">
                       <Flex justify="space-between" mb={2} align="center">
-                        {renderSender(notification.sender)}
+                        {notification.sender && renderSender(notification.sender)}
                         <Flex align="center">
                           {renderTag(notification.status)}
                           {!notification.read && (
@@ -178,10 +193,13 @@ const Notifications = () => {
                           </Button>
                         </ButtonGroup>
                       )}
-
-                      <Text fontSize="xs" color="gray.500" mt={2}>
+                      {
+                        notification.timestamp && <Text fontSize="xs" color="gray.500" mt={2}>
                         {new Date(notification.timestamp).toLocaleString()}
+                        
                       </Text>
+                      }
+                      
                     </Flex>
                   </Menu.Item>
                   {index < notifications.length - 1 && <Menu.Separator />}

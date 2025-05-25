@@ -1,17 +1,12 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { 
-  Notification, 
-  User, 
   fetchNotifications, 
   markNotificationAsRead, 
-  updateNotificationStatus 
+  respondToAccessRequest, 
+  updateNotificationStatus,
+ 
 } from '../api';
-
-interface NotificationsState {
-  notifications: Notification[];
-  loading: boolean;
-  error: string | null;
-}
+import { NotificationsState, User, Notification } from './types';
 
 const initialState: NotificationsState = {
   notifications: [],
@@ -48,11 +43,26 @@ export const markAsRead = createAsyncThunk(
 export const changeNotificationStatus = createAsyncThunk(
   'notifications/changeStatus',
   async (
-    payload: { id: string; status: 'approved' | 'rejected' | 'acknowledged' },
+    payload: { id: string; status: string },
     { rejectWithValue }
   ) => {
     try {
       await updateNotificationStatus(payload.id, payload.status);
+      return payload;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
+export const handleAccessRequest = createAsyncThunk(
+  'notifications/respondToAccess',
+  async (
+    payload: { notificationId: string; response: 'approved' | 'rejected' },
+    { rejectWithValue }
+  ) => {
+    try {
+      await respondToAccessRequest(payload.notificationId, payload.response);
       return payload;
     } catch (err) {
       return rejectWithValue(err.message);
@@ -86,13 +96,21 @@ const notificationsSlice = createSlice({
       })
       .addCase(changeNotificationStatus.fulfilled, (
         state, 
-        action: PayloadAction<{ id: string; status: 'approved' | 'rejected' | 'acknowledged' }>
+        action: PayloadAction<{ id: string; status: string }>
       ) => {
         const notification = state.notifications.find(n => n.id === action.payload.id);
         if (notification) {
           notification.status = action.payload.status;
           notification.read = true;
         }
+      })
+      .addCase(handleAccessRequest.fulfilled, (
+        state, 
+        action: PayloadAction<{ notificationId: string; response: string }>
+      ) => {
+        state.notifications = state.notifications.filter(
+          notification => notification.id !== action.payload.notificationId
+        );
       });
   },
 });

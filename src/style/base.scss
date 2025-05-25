@@ -81,6 +81,7 @@ body {
   line-height: 1.5;
   color: var(--color-text);
   background-color: var(--color-bg);
+  overflow: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background-color var(--transition-normal), color var(--transition-normal);

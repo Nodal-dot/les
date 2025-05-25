@@ -3,11 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { TypedUseSelectorHook } from 'react-redux';
 import authReducer from './authSlice';
 import notificationsReducer from './notificationsSlice';
+import networksReducer from './networksSlice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     notifications: notificationsReducer,
+      networks: networksReducer,
+
   },
 });
 
