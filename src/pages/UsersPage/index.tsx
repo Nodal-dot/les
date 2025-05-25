@@ -7,7 +7,6 @@ import {
   Spinner,
   Portal,
   Select,
-  Text,
   createListCollection
 } from '@chakra-ui/react';
 import { fetchUsers, updateUserRole, deleteUser, requestCompanyAccess } from '../../api';
@@ -114,7 +113,6 @@ const UsersPage: React.FC = () => {
     );
   }
 
-  // Group users by company when current user doesn't have a company
   if (!currentUser.company) {
     const companies = users.reduce((acc, user) => {
       if (user.company) {

@@ -3,7 +3,6 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   Flex,
-  Box,
 } from "@chakra-ui/react";
 import { Link, useLocation } from "react-router-dom";
 import * as React from "react";

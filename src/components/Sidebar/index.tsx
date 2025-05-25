@@ -6,17 +6,14 @@ import {
   Flex,
   Stack,
   Button,
-  VStack,
   Switch,
 } from '@chakra-ui/react';
 import {
   FiHome,
   FiMap,
-  FiActivity,
   FiUsers,
   FiFileText,
-  FiSettings,
-  FiLogOut,
+
 } from 'react-icons/fi';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import { useColorMode } from '../ui/color-mode';
@@ -27,15 +24,13 @@ const Sidebar = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { colorMode, toggleColorMode } = useColorMode();
-  const { signOut, isAuthenticated, user } = useAuth();
+  const { signOut, isAuthenticated } = useAuth();
 
   const navItems = [
     { icon: FiHome, path: '/main_window', label: 'Главная' },
     { icon: FiMap, path: '/map', label: 'Карта' },
-    { icon: FiActivity, path: '/sensors', label: 'Сенсоры' },
     { icon: FiUsers, path: '/users', label: 'Пользователи' },
-    { icon: FiFileText, path: '/reports', label: 'Ошибки' },
-    { icon: FiSettings, path: '/account', label: 'Аккаунт' },
+    { icon: FiFileText, path: '/reports', label: 'Отчеты' },
   ];
 
   const handleLogout = () => {

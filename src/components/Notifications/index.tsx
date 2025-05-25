@@ -67,7 +67,7 @@ const Notifications = () => {
 
   const renderTag = (status) => {
     const colorScheme =
-      status === 'pending' ? 'yellow' : status === 'approved' ? 'green' : status === 'rejected' ? 'red' : 'gray';
+      status === 'ожидает' ? 'yellow' : status === 'одобред' ? 'green' : status === 'отклонен' ? 'red' : 'gray';
 
     return (
       <Tag.Root colorScheme={colorScheme} size="sm" textTransform="capitalize">
@@ -169,7 +169,7 @@ const Notifications = () => {
                         </Text>
                       )}
 
-                      {notification.status === 'pending' && user?.role === 'admin' && (
+                      {notification.status === 'ожидает' && user?.role === 'admin' && (
                         <ButtonGroup size="sm" mt={3}>
                           <Button
                             onClick={e => {

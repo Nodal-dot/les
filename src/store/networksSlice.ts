@@ -5,7 +5,7 @@ import {
   fetchSensorData as apiFetchSensorData,
 } from '../api';
 import { RootState } from './index';
-import { NetworkDetails, SensorDetails, SensorData } from './types';
+import { NetworkDetails, SensorDetails } from './types';
 
 interface NetworksState {
   networks: NetworkDetails[];
@@ -96,7 +96,6 @@ const networksSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Handle fetchNetworks
       .addCase(fetchNetworks.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -110,7 +109,6 @@ const networksSlice = createSlice({
         state.error = action.payload as string || 'Failed to fetch networks';
       })
       
-      // Handle fetchNetworkSensors
       .addCase(fetchNetworkSensors.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -118,7 +116,6 @@ const networksSlice = createSlice({
       .addCase(fetchNetworkSensors.fulfilled, (state, action) => {
         state.loading = false;
         state.sensors = action.payload.sensors;
-        // Update current network if it's the one we're viewing
         if (state.currentNetwork?.id === action.payload.networkId) {
           state.currentNetwork = {
             ...state.currentNetwork,
@@ -131,7 +128,6 @@ const networksSlice = createSlice({
         state.error = action.payload as string || 'Failed to fetch sensors';
       })
       
-      // Handle fetchSensorData
       .addCase(fetchSensorData.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -140,7 +136,6 @@ const networksSlice = createSlice({
         state.loading = false;
         state.sensorData = action.payload.data;
         state.sensorDataHeaders = action.payload.headers;
-        // Update current sensor if it's the one we're viewing
         if (state.currentSensor?.id === action.payload.sensorId) {
           state.currentSensor = {
             ...state.currentSensor,
@@ -159,7 +154,7 @@ export const { setCurrentNetwork, setCurrentSensor, clearSensorData } = networks
 
 export default networksSlice.reducer;
 
-// Selectors
+
 export const selectNetworks = (state: RootState) => state.networks.networks;
 export const selectCurrentNetwork = (state: RootState) => state.networks.currentNetwork;
 export const selectSensors = (state: RootState) => state.networks.sensors;

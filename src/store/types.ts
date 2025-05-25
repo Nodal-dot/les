@@ -74,6 +74,7 @@ export interface Sensor {
     lng: number;
   };
   networkId: string;
+  
 }
 
 export interface SensorData {
@@ -88,6 +89,7 @@ export interface SensorDetails {
   location: string;
   type: string;
   lastUpdated: string;
+  accessUsers: string[];
   region: string;
   isActive: boolean;
   company: string;
@@ -106,4 +108,14 @@ export interface NetworkDetails {
   createdAt: string;
   sensorsCount: number;
   sensors?: SensorDetails[]; 
+}
+
+export interface Report {
+  id: string;
+  username: string;
+  sensorId: string;
+  networkId: string;
+  company: string;
+  reportType: 'png' | 'pdf' | 'txt';
+  createdAt: string;
 }
